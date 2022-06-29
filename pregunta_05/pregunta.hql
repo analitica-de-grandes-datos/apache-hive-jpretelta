@@ -45,6 +45,12 @@ LOAD DATA LOCAL INPATH 'data1.csv' INTO TABLE tbl1;
     >>> Escriba su respuesta a partir de este punto <<<
 */
 
-INSERT OVERWRITE DIRECTORY 'output'
+INSERT OVERWRITE LOCAL DIRECTORY 'output'
 ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
-SELECT  YEAR(c4) as fecha , list , count(*) FROM tbl0  lateral view EXPLODE(c5) table as list GROUP BY YEAR(c4), lit;
+
+SELECT YEAR(c4) AS year_1, letter, count(letter) AS count
+FROM 
+    tbl0
+LATERAL VIEW
+    EXPLODE(c5) tbl0 AS letter
+GROUP BY YEAR(c4), letter;
